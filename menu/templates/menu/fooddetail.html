@@ -1,0 +1,15 @@
+<h1>{{ food.food_name }} include </h1>
+{% if  error_message %} <p><strong>{{ error_message }}</strong></p>{% endif %}
+<form action="{% url 'fooddetail' food.food_name %}" method="post">
+    {% csrf_token %}
+    {% for ingredient in food.foodingredient_set.all %}
+    <input type="radio" name="ingredient" id="ingredient{{ forloop.counter }}" value="{{ ingredient.ingredient_name }}">
+    <label for="ingredient{{ forloop.counter }}"> {{ ingredient.ingredient_name }}</label><br>
+    {% endfor %}
+<input type="submit" value="vote">
+</form>
+<ul>
+    {% for foodingredient in food.foodingredient_set.all %}
+        <li>{{ foodingredient.food_ingredient_ratio }} % <a href="{% url 'ingredientdetail' foodingredient.ingredient_name %}"> {{ foodingredient.ingredient_name }} </a> </li>
+    {% endfor %}
+</ul>
