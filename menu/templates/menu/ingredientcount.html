@@ -1,0 +1,9 @@
+<h1>{{ food.food_name }}</h1>
+
+<ul>
+{% for ingredient in food.foodingredient_set.all %}
+    <li>{{ ingredient.ingredient_name }} -- {{ ingredientcount.ingredient_count }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'ingredient/<str:ingredient_name>/' food.food_name %}">Vote again?</a>

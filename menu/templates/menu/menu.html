@@ -1,0 +1,19 @@
+{% if lastest_food_list %}
+    <ul>
+        {% for food in lastest_food_list %}
+        <li><a href="{% url 'fooddetail' food.food_name %}">{{ food.food_name }}</a> </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p> No Food to show</p>
+{% endif %}
+
+{% if lastest_ingredient_list %}
+    <ul>
+        {% for ingredient in lastest_ingredient_list %}
+        <li><a href="{% url 'ingredientdetail' ingredient.ingredient_name%}">{{ ingredient.ingredient_name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p> No Ingredient to show</p>
+{% endif %}

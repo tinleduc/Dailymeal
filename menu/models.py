@@ -327,10 +327,10 @@ class Ingredient(models.Model):
         return self.ingredient_name
 
 
-class Ingredientchoice(models.Model):
+class Ingredientcount(models.Model):
     ingredient_name = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    ingredient_choice = models.IntegerField()
-    ingredient_choice_des = models.TextField()
+    ingredient_count = models.IntegerField()
+    ingredient_count_des = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
 
