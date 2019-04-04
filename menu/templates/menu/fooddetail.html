@@ -16,3 +16,16 @@
         {% endfor %}
     </ul>
 {% endif %}
+
+<a href="{% url 'add_comment_to_food' food_name=food.food_name %}">Add comment</a>
+
+{% for comment in food.comment_set.all %}
+    {% if user.is_authenticated %}
+    <div>
+        <p>{{ comment.content }}</p>
+        <strong>Commented by {{ comment.user.username }}</strong>
+    </div>
+    {% endif %}
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}

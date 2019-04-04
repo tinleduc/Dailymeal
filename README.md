@@ -813,26 +813,86 @@ Step 35: Using Django
                     Each attribute of the model represents a database field
                     With all of this Django gives you an automatically database-access API
                 Notes:
-                    
                     The name of table is automatically derived from some models metadata but can ve overridden
                     An id field is added automatically but this behavior can be overridden
-            
             Using models
                 You need to tell Django you going to use models which you have defined
                 By editing your settings file and changing the INSTALLED_APPS setting 
                 to add the name of module that contains your models.py
-            
             Fields
                 The most important part of a model and the only required part of model
                  - is list of database fields it defines
                 Fields are specified by class attributes.
-            
-            Field types
-                
-                 
-                 
-                 
+                Field types
+                Field options
+                Automatic primary key fields
+                Verbose field names
+                Relationships
+                    Many-to-many Relationships
+                    Extra fields on many-to-many Relationships
+                    One-to-one relationships
+                Models across files                
+                Field name retrictions                
+                Custome field type           
+            Meta Options            
+            Models attributes                
+            Model methods                
+                Overrideing predefined model methods                
+                Executing custome SQL                
+            Model inhertance                
+                Abstrach base classes                
+                    Meta inheritance
+                    Becareful with related_name and related_query_name                
+                Multi-table inheritance                
+                    Meta and multi-table inheritance                    
+                    Inheritance and reverse relations                    
+                    Specifying the parent link field                
+                Proxy models                
+                    QuerySet still return the model that was requested
+                    Base class restrictions
+                    Proxy model managers
+                    Differences between proxy inheritance and unmanaged models                
+                Multiple inheritance                
+                Field name hiding is not permitted                
+            Organizing models in a package
+                             
         Making queries
+            Creating objects
+            Saving changes to objects
+                Saving ForeignKey and ManyToManyFields fields
+            Retrieving objects 
+                Retrieving all objects
+                Retrieving specific objects with filters
+                Filtered QuerySets are unique
+                QuerySet are lazy
+            Retrieving a single object with get
+            Other QuerySet methods
+            Limiting QuerySets
+            Field lookups
+            Lookups that span relationships
+                Spanning multi-valued relationships
+            Filters can reference fields on the model
+            The pk lookup shortcut
+            Escaping percent signs and underscores in LIKE statements
+            Caching and QuerySets 
+                When QurerySet are not cached
+            Complex lookups with Q objects
+            Comparing objects
+            Deleting objects
+            Copying model instances
+            Updating multiple objects at once
+            Related Objects 
+                One to many relationship    
+                    Forward
+                    Following realationships backward
+                    Using a custom reverse manager
+                    Additional methods to handle related objects
+                Many to many relationships
+                One to one relationships
+                How are the backward relationships possible
+                Queries over related objects
+            Falling back to raw SQL
+             
         Aggregations
         Search
         Managers

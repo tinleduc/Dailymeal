@@ -1,0 +1,31 @@
+<head>
+    <title> DAILY MEAL</title>
+</head>
+
+<body>
+   <div>
+      <a href="/"><b>DAILY</b> MEAL</a>
+   </div>
+   <div>
+       {%  if user.is_authenticated %}
+           <p>Hello {{ user.email }}</p>
+       {% else %}
+          <p>Sign in to start</p>
+          <form role="form" method="POST" action="{% url 'login' %}">
+             {% csrf_token %}
+              {{ form.non_fields.errors }}
+             <div>
+                <input type="email" class="form-control" id="id_username" placeholder="Email" name="email">
+             </div>
+             <div>
+                <input type="password" class="form-control" id="id_password" placeholder="Password" name="password">
+             </div>
+             <div class="row">
+                <div class="col-xs-4">
+                   <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+             </div>
+          </form>
+       {% endif %}
+   </div>
+</body>

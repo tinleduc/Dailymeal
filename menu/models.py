@@ -1,4 +1,7 @@
 from django.db import models
+from django.conf import settings
+
+
 # Create your models here.
 
 
@@ -316,7 +319,19 @@ class Foodcategory(models.Model):
         return self.food_category_name
 
 
+class Ingredientcategory(models.Model):
+    ingredient_category_name = models.CharField(max_length=200)
+    ingredient_category_image = models.TextField()
+    ingredient_category_des = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.ingredient_category_name
+
+
 class Ingredient(models.Model):
+    ingredient_category = models.ForeignKey(Ingredientcategory, on_delete=models.CASCADE, default='')
     ingredient_name = models.CharField(max_length=200)
     ingredient_image = models.TextField()
     ingredient_des = models.TextField()
@@ -386,6 +401,10 @@ class Foodingredient(models.Model):
 
     def __str__(self):
         return self.food_ingredient_name
+
+    def save(self, *args, **kwargs):
+        self.food_ingredient_name = self.food_name.food_name + self.ingredient_name.ingredient_name
+        return super().save(*args, **kwargs)
 
 
 class Dailymeal(models.Model):
@@ -485,6 +504,15 @@ class Information(models.Model):
     def __str__(self):
         return self.menu_meal_actual
 
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    content = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content
 
 
 
