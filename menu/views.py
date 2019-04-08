@@ -11,15 +11,18 @@ from .forms import *
 # Create your views here.
 
 
-class HomepageView(ListView):
+class HomepageView(TemplateView):
     template_name = 'adminpages/homepage.html'
-    context_object_name = 'best_food_list'
 
-    def get_queryset(self):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
         if self.request.user.is_authenticated:
-            return Food.objects.order_by('created_at')[:5]
+            context['lastest_food_list'] = Food.objects.order_by('created_at')[:5]
+            context['lastest_ingredient_list'] = Ingredient.objects.order_by('created_at')[:5]
         else:
-            return Food.objects.order_by('created_at')[:1]
+            context['lastest_food_list'] = Food.objects.order_by('created_at')[:1]
+        return context
 
 
 class LoginView(FormView):
@@ -48,36 +51,43 @@ class LoginView(FormView):
 
 def logout_view(request):
     logout(request)
-    # messages.success(
-    #     request,('Sign out successfully!'),
-    #     extra_tags='alert-success'
-    # )
     return redirect('homepage')
 
 
 class RegisterView(TemplateView):
     template_name = 'adminpages/register.html'
 
+#
+# def menu(request):
+#     lastest_food_list = Food.objects.order_by('-created_at')[:5]
+#     # template = loader.get_template('menu/food.html')
+#     context = {'lastest_food_list':lastest_food_list,}
+#     # return HttpResponse(template.render(context,request))
+#     return render(request, 'menu/food.html', context)
+#
+#     lastest_ingredient_list = Ingredient.objects.order_by('-created_at')[:3]
+#     context = {'lastest_ingredient_list': lastest_ingredient_list}
+#     return render(request, 'menu/ingredient.html', context)
 
-def menu(request):
-    lastest_food_list = Food.objects.order_by('-created_at')[:5]
-    # template = loader.get_template('menu/food.html')
-    context = {'lastest_food_list':lastest_food_list,}
-    # return HttpResponse(template.render(context,request))
-    return render(request, 'menu/food.html', context)
 
-    lastest_ingredient_list = Ingredient.objects.order_by('-created_at')[:3]
-    context = {'lastest_ingredient_list': lastest_ingredient_list}
-    return render(request, 'menu/ingredient.html', context)
+class FoodListView(ListView):
+    template_name = 'menu/food.html'
+    context_object_name = 'best_food_list'
 
-
-def food(request):
-    lastest_food_list = Food.objects.order_by('-created_at')[:5]
-    # template = loader.get_template('menu/food.html')
-    context = {'lastest_food_list': lastest_food_list}
-    comments = Comment.objects.all()
-    # return HttpResponse(template.render(context,request))
-    return render(request, 'menu/food.html', context)
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Food.objects.order_by('created_at')[:5]
+        else:
+            return Food.objects.order_by('created_at')[:1]
+#
+#
+# def food(request):
+#     lastest_food_list = Food.objects.order_by('-created_at')[:5]
+#     # template = loader.get_template('menu/food.html')
+#     context = {'lastest_food_list': lastest_food_list}
+#     comments = Comment.objects.all()
+#     # return HttpResponse(template.render(context,request))
+#     return render(request, 'menu/food.html', context)
 
 
 def fooddetail(request, food_name):
@@ -104,7 +114,7 @@ def add_comment_to_food(request, food_name):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.food = food
+            comment.food = request.food
             comment.user = request.user
             comment.save()
             return redirect('fooddetail', food_name=food.food_name)
@@ -113,11 +123,21 @@ def add_comment_to_food(request, food_name):
     return render(request, 'menu/add_comment_to_food.html', {'form': form})
 
 
+class IngredientListView(ListView):
+    template_name = 'menu/ingredient.html'
+    context_object_name = 'best_ingredient_list'
 
-def ingredient(request):
-    lastest_ingredient_list = Ingredient.objects.order_by('-created_at')[:3]
-    context = {'lastest_ingredient_list': lastest_ingredient_list}
-    return render(request, 'menu/ingredient.html', context)
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Ingredient.objects.order_by('created_at')[:5]
+        else:
+            return Ingredient.objects.order_by('created_at')[:1]
+#
+#
+# def ingredient(request):
+#     lastest_ingredient_list = Ingredient.objects.order_by('-created_at')[:3]
+#     context = {'lastest_ingredient_list': lastest_ingredient_list}
+#     return render(request, 'menu/ingredient.html', context)
 
 
 def ingredientdetail(request, ingredient_name):

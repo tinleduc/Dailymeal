@@ -10,13 +10,14 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
 
     # /menu/food/
-    path('food/', views.food, name='food'),
+    # path('food/', views.food, name='food'),
 
     # /menu/food/food_name/
+    path('foodlist/', views.FoodListView, name='foodlist'),
     path('food/<food_name>/', views.fooddetail, name='fooddetail'),
-    path('food<food_name>/comment/', views.add_comment_to_food, name='add_comment_to_food'),
+    path('food/<food_name>/comment/', views.add_comment_to_food, name='add_comment_to_food'),
     # /ingredient list/
-    path('ingredient/', views.ingredient, name='ingredient'),
+    path('ingredientlist/', views.IngredientListView, name='ingredientlist'),
     # /ingredient/ingredient_name/
     path('ingredient/<str:ingredient_name>/', views.ingredientdetail, name='ingredientdetail'),
     # /ingredient/ingredient_name/count/
