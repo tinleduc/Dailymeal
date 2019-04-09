@@ -1,6 +1,7 @@
+{% extends "adminpages/base.html" %}
 {% load static %}
-<h1> Top Foods list </h1>
-
+{% block content %}
+<h1> Foods list </h1>
 {% if lastest_food_list %}
 
 <table style = "width:100%">
@@ -23,8 +24,4 @@
     <p> No foods are available</p>
 {% endif %}
 
-
-{% url 'allfood' as the_url %}
-<a href="{{ the_url }}"> See all food</a>
-
-<a href="{% url 'export_food_csv' %}">Export all foods</a>
+{%  endblock %}

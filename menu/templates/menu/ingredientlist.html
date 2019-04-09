@@ -1,7 +1,9 @@
+{% extends "adminpages/base.html" %}
 {% load static %}
-<h1> Top Ingredients list </h1>
-{% if lastest_ingredient_list %}
+{% block content %}
+<h1> Ingredients list </h1>
 
+{% if lastest_ingredient_list %}
 <table style = "width:100%">
     <tr>
         <th>Ingredient name</th>
@@ -20,4 +22,5 @@
 {% else %}
     <p> Nothing to show</p>
 {% endif %}
-<a href="{% url 'allingredient'  %}"> See all ingredients</a>
+
+{% endblock %}

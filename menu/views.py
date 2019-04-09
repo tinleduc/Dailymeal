@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.forms import  ValidationError
+import csv
+from django.contrib.auth.models import User
 
 from .models import *
 from .forms import *
@@ -18,10 +20,11 @@ class HomepageView(TemplateView):
         context = super().get_context_data(*args, **kwargs)
 
         if self.request.user.is_authenticated:
-            context['lastest_food_list'] = Food.objects.order_by('created_at')[:5]
-            context['lastest_ingredient_list'] = Ingredient.objects.order_by('created_at')[:5]
+            context['lastest_food_list'] = Food.objects.order_by('-created_at')[:5]
+            context['lastest_ingredient_list'] = Ingredient.objects.order_by('-created_at')[:5]
         else:
-            context['lastest_food_list'] = Food.objects.order_by('created_at')[:1]
+            context['lastest_food_list'] = Food.objects.order_by('-created_at')[:1]
+            context['lastest_ingredient_list'] = Ingredient.objects.order_by('-created_at')[:1]
         return context
 
 
@@ -70,15 +73,26 @@ class RegisterView(TemplateView):
 #     return render(request, 'menu/ingredient.html', context)
 
 
+class AllFoodView(ListView):
+    template_name = 'menu/foodlist.html'
+    context_object_name = 'lastest_food_list'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Food.objects.order_by('-created_at')
+        else:
+            return Food.objects.order_by('-created_at')[:1]
+
+
 class FoodListView(ListView):
     template_name = 'menu/food.html'
     context_object_name = 'best_food_list'
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return Food.objects.order_by('created_at')[:5]
+            return Food.objects.order_by('-created_at')[:5]
         else:
-            return Food.objects.order_by('created_at')[:1]
+            return Food.objects.order_by('-created_at')[:1]
 #
 #
 # def food(request):
@@ -123,6 +137,17 @@ def add_comment_to_food(request, food_name):
     return render(request, 'menu/add_comment_to_food.html', {'form': form})
 
 
+class AllIngredientView(ListView):
+    template_name = 'menu/ingredientlist.html'
+    context_object_name = 'lastest_ingredient_list'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Ingredient.objects.order_by('created_at')
+        else:
+            return Ingredient.objects.order_by('created_at')[:1]
+
+
 class IngredientListView(ListView):
     template_name = 'menu/ingredient.html'
     context_object_name = 'best_ingredient_list'
@@ -165,7 +190,32 @@ def countresult(request, food_name):
     return render(request, 'menu/ingredientcount.html', {'food': food})
 
 
+def export_users_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="users.csv"'
 
+    writer = csv.writer(response)
+    writer.writerow(['Username', 'First name', 'Last name', 'Email'])
+
+    users = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
+    for user in users:
+        writer.writerow(user)
+
+    return response
+
+
+def export_food_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="food.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Food', 'Description'])
+
+    foods = Food.objects.all().values_list('id', 'food_name', 'food_des')
+    for food in foods:
+        writer.writerow(food)
+
+    return response
 
 
 

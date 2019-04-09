@@ -1,3 +1,6 @@
+{% extends "adminpages/base.html" %}
+
+{% block content %}
 <h1>{{ food.food_name }} include </h1>
 {% if  error_message %} <p><strong>{{ error_message }}</strong></p>{% endif %}
 <form action="{% url 'fooddetail' food.food_name %}" method="post">
@@ -32,5 +35,7 @@
 {% empty %}
     <p>No comments here yet :(</p>
 {% endfor %}
+
+{%  endblock %}
 
 
